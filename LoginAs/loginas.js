@@ -78,17 +78,18 @@ app.get('/', function (req, res) {
 // example: https://qmi-qs-cln:8190/login?usr=toscafan&dir=TEASER
 app.get('/login', function (req, res) {
 
-    var usr = req.query.p;  // read querystring "p" from url
-    usr = Buffer.from(usr, 'base64').toString();
-    usr = usr.split(String.fromCharCode(0)).join('');  // remove char(0)
-    var dir = req.query.z;
-    dir = Buffer.from(dir, 'base64').toString();
-    dir = dir.split(String.fromCharCode(0)).join(''); // remove char(0)
-    var goto = req.query.goto || '/hub';
-    
-    if(!usr || !dir) {
-        res.send("<HTML><HEAD></HEAD><BODY>Missing relevant querystrings.</BODY><HTML>");      
+    var p = req.query.p;  // read querystring "p" from url
+    var z = req.query.z;
+    var base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+    if(!p || !z || !base64regex.test(p) || !base64regex.test(z)) {
+        res.send("Missing relevant querystrings.");          
     } else {
+        var usr = Buffer.from(p, 'base64').toString();
+        usr = usr.split(String.fromCharCode(0)).join('');  // remove char(0)
+        var dir = Buffer.from(z, 'base64').toString();
+        dir = dir.split(String.fromCharCode(0)).join(''); // remove char(0)
+        var goto = req.query.goto || '/hub';
+            
         console.log("Create session for user " + dir + "\\" + usr);
         //Create session for the user and user directory    
         //Configure parameters for the ticket request
