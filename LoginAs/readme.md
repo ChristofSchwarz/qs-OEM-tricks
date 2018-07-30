@@ -6,3 +6,6 @@ The Script searches for node.exe and prompts for user name. Then it launches a b
 Express Server. After a few seconds you can login as the given user.
 
 This requires no password and uses the local certificates for login. Consider this as a high previlege and use with caution.
+
+Launch from an elevated Powershell script (with Admin rights)
+.\loginas.ps1
