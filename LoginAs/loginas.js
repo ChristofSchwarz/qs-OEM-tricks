@@ -115,16 +115,21 @@ app.get('/login', function (req, res) {
                 res.send("<html><head></head><body>"
                // + "<script>window.location='/redirect?goto=" + goto + "';</script>" 
                 + "Session " + session.SessionId +" created for user "+ session.UserId 
-                + "<br/>Click <a href='" + QPSAPI.protocol + "//" + QPSAPI.host + goto
-                + "' target='_new'>here</a> to get redirected."
-                + "<br/>Or <a href='/logout'>here</a> to logout the session."
+                + "<br/>Go to <a href='" + QPSAPI.protocol + "//" + QPSAPI.host + goto
+                + "' target='_new'>Hub</a> or <a href='/logout'>Logout</a> the session."
                 + "</body></html>");
                 
             });
         });
 
         //Send JSON request for session
-        var jsonrequest = JSON.stringify({ 'UserDirectory': dir.toString() , 'UserId': usr.toString(), "SessionId": generateUUID() });
+        var jsonrequest = JSON.stringify(
+            { "UserDirectory": dir.toString(), 
+              "UserId": usr.toString(), 
+              "SessionId": generateUUID(),
+              "Attributes": [{"option": 'qpslogin'}]
+            }
+        );
         
         sessionreq.write(jsonrequest);
         sessionreq.end();
