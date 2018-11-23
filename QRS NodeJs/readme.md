@@ -14,4 +14,8 @@ The code snipped solves a few interesting things, which you can reuse also in ot
  * has a good generic function qrsApi() which takes a method and the endpoint and returns a promise and has error handling.
  * it shows how to wait for an array of promises (serach for await Promise.all)
  
+Preconditions:
+ * QRS API is used via Qlik Sense server port 4242 and certificates
+ * if run on the same machine as Qlik Sense server, you do not need to copy certificates, it will find it in the default folder "C:\ProgramData\Qlik\Sense\Repository\Exported Certificates\.Local Certificates"
+ * if run from another machine, make sure the port is open and copy the client.pem and client_key.pem into the same folder as the qrs-unallocate.js file
  
