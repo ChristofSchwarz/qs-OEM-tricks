@@ -6,7 +6,7 @@ The job of this NodeJs app is to query the available license allocations (profes
 
 If you are in 'recycle' mode, it looks for allocations of professional and analyzer access types that haven't been used for more than 7 days and where the respective user is not  tagged with the tag "keepAllocation" (in the QMC). Such allocation will be deleted, so that this professional or analyzer access can be reused by someone else immediately after. 
 
-To prevent a allocation to be recylced go to QMC, create a Tag "keepAllocation" (case sensitive!) and assign this tag to some users.
+To prevent a allocation to be recycled go to QMC, create a Tag "keepAllocation" (case sensitive!) and assign this tag to some users.
 ![alttext](https://github.com/ChristofSchwarz/pics/raw/master/qmc-user-tags.png "screenshot")
 
 Note: 7 days is a quarantine hard-coded by Qlik, so to unallocate a user who used Qlik within the last 7d will turns this allocation into status 'quarantined' and it is still not available until the 7d since last use are over. So I do not even attept to unallocate in this case.
@@ -18,6 +18,7 @@ This code solves a few interesting things, which you can reuse also in other con
  * how to wait for an array of promises (serach for await Promise.all)
  
 Preconditions:
+ * install the following 3 modules: *npm install console.table fs https*
  * QRS API is used via Qlik Sense server port 4242 and certificates
  * if run on the same machine as Qlik Sense server, you do not need to copy certificates, it will find it in the default folder "C:\ProgramData\Qlik\Sense\Repository\Exported Certificates\.Local Certificates"
  * if run from another machine, make sure the port is open and copy the client.pem and client_key.pem into the same folder as the qrs-unallocate.js file
