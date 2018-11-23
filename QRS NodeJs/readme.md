@@ -19,3 +19,4 @@ Preconditions:
  * if run on the same machine as Qlik Sense server, you do not need to copy certificates, it will find it in the default folder "C:\ProgramData\Qlik\Sense\Repository\Exported Certificates\.Local Certificates"
  * if run from another machine, make sure the port is open and copy the client.pem and client_key.pem into the same folder as the qrs-unallocate.js file
  
+ ![](/ChristofSchwarz/pics/raw/master/screenshot-qrs-dealloc.png "screenshot")
