@@ -18,7 +18,7 @@ This code solves a few interesting things, which you can reuse also in other con
  * how to wait for an array of promises (serach for await Promise.all)
  
 Preconditions:
- * install the following 3 modules: *npm install console.table fs https*
+ * install the following 3 modules: __npm install console.table fs https__
  * QRS API is used via Qlik Sense server port 4242 and certificates
  * if run on the same machine as Qlik Sense server, you do not need to copy certificates, it will find it in the default folder "C:\ProgramData\Qlik\Sense\Repository\Exported Certificates\.Local Certificates"
  * if run from another machine, make sure the port is open and copy the client.pem and client_key.pem into the same folder as the qrs-unallocate.js file
