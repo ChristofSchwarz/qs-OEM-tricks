@@ -10,15 +10,18 @@ const WebSocket = require('ws');
 const fs = require('fs');
 const schema = require('./node_modules/enigma.js/schemas/12.170.2.json'); 
 // match this schema to your Qlik Sense version.
+const defaultCertPath = 'C:\\ProgramData\\Qlik\\Sense\\Repository\\Exported Certificates\\.Local Certificates';
 
 const session = enigma.create({
     schema,
-    url: 'wss://qmi-qs-aai/header:4747/app/engineData',
+    url: 'wss://qmi-qs-aai:4747/app/engineData',
     createSocket: url => new WebSocket(url, {
         rejectUnauthorized: false,  
         //ca: [fs.readFileSync('.\\root.pem')],  // you can skip ca if you set rejectUnautzoried to false
-        key: fs.readFileSync(".\\client_key.pem"),
-        cert: fs.readFileSync(".\\client.pem"),
+        key: fs.existsSync(".\\client_key.pem")?fs.readFileSync(".\\client_key.pem")
+            :fs.readFileSync(defaultCertPath + "\\client_key.pem"),
+        cert: fs.existsSync(".\\client.pem")?fs.readFileSync(".\\client.pem")
+            :fs.readFileSync(defaultCertPath + "\\client.pem"),
         headers: {
             // this impersonates any user! 
             "X-Qlik-User": 'UserDirectory=INTERNAL;UserId=sa_engine'
