@@ -1,4 +1,4 @@
-# enigma-certs.js
+# enigma-certificates.js
 
 Example of a code that uses Engine Port 4747 (Qlik Sense Server) to connect with certificates. You need the Client.pem and
 client_key.pem file. Either place the two certifcates in the same folder as this .js file, otherwise the script will search for the 
