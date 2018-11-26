@@ -7,26 +7,21 @@
 
 const enigma = require('./node_modules/enigma.js/enigma.min.js');
 const WebSocket = require('ws');
-//const path = require('path');
 const fs = require('fs');
-const schema = require('./node_modules/enigma.js/schemas/12.170.2.json');
-
+const schema = require('./node_modules/enigma.js/schemas/12.170.2.json'); 
+// match this schema to your Qlik Sense version.
 
 const session = enigma.create({
     schema,
-    url: 'wss://qmi-qs-aai/header:443/app/engineData?xrfkey=1234567890ABCDEF',
-    //url: 'wss://qmi-qs-aai:443/header/app/engineData',
+    url: 'wss://qmi-qs-aai/header:4747/app/engineData',
     createSocket: url => new WebSocket(url, {
         rejectUnauthorized: false,  
         //ca: [fs.readFileSync('.\\root.pem')],  // you can skip ca if you set rejectUnautzoried to false
-        //key: fs.readFileSync(".\\client_key.pem"),
-        //cert: fs.readFileSync(".\\client.pem"),
+        key: fs.readFileSync(".\\client_key.pem"),
+        cert: fs.readFileSync(".\\client.pem"),
         headers: {
             // this impersonates any user! 
-            "X-Qlik-Xrfkey": '1234567890ABCDEF',
-            "userid": 'scripload'
-            //"X-Qlik-User": 'UserDirectory=INTERNAL;UserId=sa_engine'
-            //"X-Qlik-User": 'UserDirectory=APIUSERS;UserId=scriptload'
+            "X-Qlik-User": 'UserDirectory=INTERNAL;UserId=sa_engine'
         }
     })
 });
