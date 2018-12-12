@@ -9,4 +9,7 @@ Different code snippets often needed by our OEMs to automate things around manag
 
 3) <a href="https://github.com/ChristofSchwarz/qs-OEM-tricks/tree/master/QRS%20NodeJs">QRS unallocate accesspasses</a> (NodeJs) looks for any allocated Professional and Analyzer access pass that hasn't been used by the user for  more than 7 days and unallocates it. This can help recycle licenses.
 
+4) <a href="https://github.com/ChristofSchwarz/qs-OEM-tricks/tree/master/enigma">Minimalistic Enigma example</a> (NodeJs) returns a list of available documents using Engine API wrapper "Enigma"
+
+5) <a href="https://github.com/ChristofSchwarz/qs-OEM-tricks/tree/master/enigma-qrs">Two best friends QRS+Enigma</a> work togehter to achieve a sequence of tasks like creating an empty copy of an app
 
