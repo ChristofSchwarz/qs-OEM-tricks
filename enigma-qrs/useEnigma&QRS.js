@@ -1,9 +1,8 @@
 
-// Code is derived from 
-// https://github.com/qlik-oss/enigma.js/tree/master/examples/authentication/sense-using-certificates
 // Using certificates to authenticate against Qlik Sense server
-// https://help.qlik.com/en-US/sense-developer/November2018/Subsystems/EngineAPI/Content/Sense_EngineAPI/GettingStarted/connecting-to-engine-api.htm
-// the alternative would be to use Proxy Service API (QPS)
+// two different APIs are used:
+// - Enigma (Engine API wrapper), websockets via port 4747
+// - QRS (Repository Service API), https via port 4242
 
 const myApp = '1c5d59ef-fecd-43c9-9d3d-8d7598cab403';
 const qsUrl = 'qmi-qs-ml';
