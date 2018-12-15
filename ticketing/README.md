@@ -1,4 +1,4 @@
-# Minimalistic Qlik Sense Ticket Solution
+# Minimalistic NodeJs Qlik Sense Ticket Solution
 
 This is pretty much the shortest code to get a user authenticated with a ticket (in this example it will always authenticate 
 with one hardcoded user). 
