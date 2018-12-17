@@ -1,9 +1,10 @@
 # Minimalistic NodeJs Qlik Sense Ticket Solution
 
 This is pretty much the shortest code to get a user authenticated with a ticket (in this example it will always authenticate 
-with one hardcoded user). This code is good when the user is meant to navigate to the Qlik Sense resource at first place and a redirection to this minimalistic module is doing an "external authentication". You cannot start the login from this module at first, but need to be redirected from the Sense Server.
+with one hardcoded user). It uses a local NodeJS. This code is good when the user is meant to navigate to the Qlik Sense resource at first place and a redirection to this minimalistic module is doing an "external authentication". You cannot start the login from this module at first, but need to be redirected from the Sense Server.
 
 Preconditions:
+* install NodeJs (which includes NPM installation)
 * setup a virtual proxy with a distinctive Prefix name and matching Session cookie header name, 
     - the authentication method is Ticket
     - the redirect URI is the location + '/login' of this nodeJs app e.g. 'http://localhost:3000/login'
