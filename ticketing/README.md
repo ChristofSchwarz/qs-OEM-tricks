@@ -22,11 +22,11 @@ will automatically produce when an unauthorized user first hits a Sense resource
 Now try this
 
 1) Go to a resource on the Sense Server (e.g. https://[yourserver]/[vproxy]/hub/my/work)
-2) Sense sees that the user isn't authenticated and redirects the browser to this address: http://localhost:3000/login?proxyRestUri=https%3a%2f%2f[yourserver]%3a4243%2fqps%2f[vproxy]%2f&targetId=f0a91ad7-b7a6-44a6-a8a8-313744dc7863
+2) Sense sees that the user isn't authenticated and redirects the browser to this address: http://localhost:3000/login?proxyRestUri=https%3a%2f%2f[yourserver]%3a4243%2fqps%2f[vproxy]%2f&targetId=[randomid]
 3) Now our NodeJs app parses the given proxyRestUri and sends out this request to the Qlik Sense QPS API via the service port 4243 and presenting the certificates
     - POST https://[yourserver]/[vproxy]/ticket together with who the user should be (here: hardcoded Json)
 4) The QPS API responds with a Json containing the Ticket-number, a cookie, and the resource which the user originally wanted to go to (e.g https://[yourserver]/[vproxy]/hub/my/work)
-5) The nodeJs app redirects the browser back to that resource and adds the ticket-number to the url (https://localhost/vpticket/hub/my/work?QlikTicket=pENwJIKvZkQjziUf)
+5) The nodeJs app redirects the browser back to that resource and adds the ticket-number to the url (https://localhost/vpticket/hub/my/work?QlikTicket=[ticketid])
 6) The user accesses now the Sense resource as the user we specified in step 3
 
 
