@@ -19,17 +19,19 @@ var httpOptions = {
 	agent: false
 };
 
+var jsonrequest = {
+	UserDirectory: 'WHATEVER',
+	UserId: 'beloved.user',
+	Attributes: [{"Group": 'ExampleGroup'}]
+};
+
 exports.handler = async (event, context) => {
 	// this returns a promise to the Lambda	handler
 	return new Promise((resolve, reject) => {
 		
 		var proxyRestUri;
 		//var targetId;
-		var jsonrequest = {
-            UserDirectory: 'WHATEVER',
-            UserId: 'beloved.user',
-            Attributes: [{"Group": 'ExampleGroup'}]
-        };
+
 		if (event.queryStringParameters == undefined) {
 			// this is used so that the "Test" button within Lambda function editor also
 			// does its job.
@@ -41,7 +43,6 @@ exports.handler = async (event, context) => {
 			// returns: 'https://senseserver.company.com:4243/qps/vproxy/'
 			proxyRestUri = proxyRestUri.replace('.0tcxhvlqqpyuncpeshxjajbkee.ax.internal.cloudapp.net', '.westeurope.cloudapp.azure.com');
 			jsonrequest.TargetId = event.queryStringParameters.targetId;
-			            //TargetId: event.queryStringParameters.targetId
 		}
 		httpOptions.host = proxyRestUri.split('//')[1].split('/')[0].split(':')[0];
 		// returns:  'senseserver.company.com'
@@ -58,9 +59,9 @@ exports.handler = async (event, context) => {
 		// creating a new https request to the Qlik Sense Server
 		var req = https.request(httpOptions, function (res) {
 			res.on('data', function (data) {
-                //Parse ticket response
-                try {
-                    var ticket = JSON.parse(data.toString());
+				//Parse ticket response
+				try {
+					var ticket = JSON.parse(data.toString());
 					console.log('QPS response:', ticket);
 					if (ticket.TargetUri == null) {
 						resolve({
@@ -76,17 +77,17 @@ exports.handler = async (event, context) => {
 							headers: {Location: redirectURI}
 						});
 					}
-                } catch(e) {
-                    reject('Invalid request JSON');
-                    return;
-                }
+				} catch(e) {
+					reject('Invalid request JSON');
+					return;
+				}
 			});
 		});
 		req.on('error',(e)=>{
 			reject(e.message);
 		});
 		
-        req.write(JSON.stringify(jsonrequest));
+		req.write(JSON.stringify(jsonrequest));
 		req.end();
 	});
 };
