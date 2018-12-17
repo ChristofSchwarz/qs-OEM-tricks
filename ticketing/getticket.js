@@ -40,9 +40,9 @@ app.get('/login', function(req, res) {
 		// returns: 'https://senseserver.company.com:4243/qps/vproxy/'
 		httpOptions.host = proxyRestUri.split('//')[1].split('/')[0].split(':')[0];
 		// returns:  'senseserver.company.com'
-		httpOptions.port = Number(req.query.proxyRestUri.split('//')[1].split('/')[0].split(':')[1] || "4243"); 
+		httpOptions.port = Number(proxyRestUri.split('//')[1].split('/')[0].split(':')[1] || "4243"); 
 		// returns: 4243
-		httpOptions.path = req.query.proxyRestUri.substring(req.query.proxyRestUri.indexOf('/',8))
+		httpOptions.path = proxyRestUri.substring(proxyRestUri.indexOf('/',8))
 			+ 'ticket?xrfkey=' + xrfkey;
 		// returns: '/qps/vproxy/ticket?xrfkey=xxxxxxxxxxxxxxxx'
 		console.log('Posting ticket request to QPS API:');
