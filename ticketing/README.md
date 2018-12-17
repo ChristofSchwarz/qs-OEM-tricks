@@ -18,7 +18,7 @@ Preconditions:
 
 
 -> The local express server now listens to an incoming request with a specific query string format which the Qlik Sense Server 
-will automatically produce when an unauthorized user first hits a Sense resource first 
+will automatically produce when an unauthorized user first hits a Sense resource. 
 
 Now try this
 
