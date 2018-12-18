@@ -20,30 +20,26 @@ var httpOptions = {
 	agent: false
 };
 
-var jsonrequest = {
-	UserDirectory: 'WHATEVER',
-	UserId: 'beloved.user',
-	Attributes: [{"Group": 'ExampleGroup'}]
-};
+var jsonrequest = settings.testuser;
 
 exports.handler = async (event, context) => {
 	// this returns a promise to the Lambda	handler
 	return new Promise((resolve, reject) => {
 		
 		var proxyRestUri;
-		//var targetId;
 
 		if (event.queryStringParameters == undefined) {
 			// this is used so that the "Test" button within Lambda function editor also
-			// does its job.
+			// does its job and that the login can also start from this endpoint, not 
+			// only from a redirect by the Qlik Sense Server
 			console.log('No queryStringParameters provided at all');
 			proxyRestUri = settings.defaultRestUri;
 		} else {
 			
-			proxyRestUri = event.queryStringParameters.proxyRestUri;
+			proxyRestUri = event.queryStringParameters.proxyRestUri || settings.defaultRestUri;
 			// returns: 'https://senseserver.company.com:4243/qps/vproxy/'
 			proxyRestUri = proxyRestUri.replace(settings.searchReplace[0], settings.searchReplace[1]);
-			jsonrequest.TargetId = event.queryStringParameters.targetId;
+			if (event.queryStringParameters.targetId) jsonrequest.TargetId = event.queryStringParameters.targetId;
 		}
 		httpOptions.host = proxyRestUri.split('//')[1].split('/')[0].split(':')[0];
 		// returns:  'senseserver.company.com'
