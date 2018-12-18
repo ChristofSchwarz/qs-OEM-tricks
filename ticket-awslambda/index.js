@@ -1,6 +1,7 @@
 const https = require('https');
 const fs = require('fs');
 const xrfkey = Math.random().toString().replace('.','').repeat(4).substr(-16);
+const settings = require('./settings.js');
 
 var httpOptions = {
 	host: null,
@@ -36,12 +37,12 @@ exports.handler = async (event, context) => {
 			// this is used so that the "Test" button within Lambda function editor also
 			// does its job.
 			console.log('No queryStringParameters provided at all');
-			proxyRestUri = 'https://qse-csw.westeurope.cloudapp.azure.com:4243/qps/vpticket/';
+			proxyRestUri = settings.defaultRestUri;
 		} else {
 			
 			proxyRestUri = event.queryStringParameters.proxyRestUri;
 			// returns: 'https://senseserver.company.com:4243/qps/vproxy/'
-			proxyRestUri = proxyRestUri.replace('.0tcxhvlqqpyuncpeshxjajbkee.ax.internal.cloudapp.net', '.westeurope.cloudapp.azure.com');
+			proxyRestUri = proxyRestUri.replace(settings.searchReplace[0], settings.searchReplace[1]);
 			jsonrequest.TargetId = event.queryStringParameters.targetId;
 		}
 		httpOptions.host = proxyRestUri.split('//')[1].split('/')[0].split(':')[0];
@@ -63,22 +64,17 @@ exports.handler = async (event, context) => {
 				try {
 					var ticket = JSON.parse(data.toString());
 					console.log('QPS response:', ticket);
-					if (ticket.TargetUri == null) {
-						resolve({
-							statusCode: 200, 
-							body: 'got a ticket, but dont know how to go back: ' + ticket.Ticket
-						});	
-					} else {
-						var redirectURI = ticket.TargetUri + ((ticket.TargetUri.indexOf("?")>=0)?'&':'?') 
-							+ 'qlikTicket=' + ticket.Ticket;
-						console.log('redirectURI',redirectURI);
-						resolve({
-							statusCode: 302, 
-							headers: {Location: redirectURI}
-						});
-					}
+					var redirectURI = ticket.TargetUri || settings.defaultReturn; 
+					redirectURI = redirectURI + ((redirectURI.indexOf("?")>=0)?'&':'?') 	+ 'qlikTicket=' + ticket.Ticket;
+					console.log('redirectURI',redirectURI);
+					resolve({
+						statusCode: 302, // 302 = redirect, 200 = OK
+						headers: {Location: redirectURI}
+						// body: 'got a ticket: ' + ticket.Ticket
+					});
+					
 				} catch(e) {
-					reject('Invalid request JSON');
+					reject(e);
 					return;
 				}
 			});
@@ -87,6 +83,7 @@ exports.handler = async (event, context) => {
 			reject(e.message);
 		});
 		
+		// Sending the json object with the POST request to QPS API
 		req.write(JSON.stringify(jsonrequest));
 		req.end();
 	});
