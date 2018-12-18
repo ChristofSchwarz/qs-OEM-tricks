@@ -5,6 +5,11 @@ module.exports = {
 	defaultRestUri: 'https://qse-csw.westeurope.cloudapp.azure.com:4243/qps/vpticket/',
 	// searchReplace manipulates the QPS URL provided by the Qlik Sense Server. On Azure based Sense
 	// Servers this url can be the internal network name, which wouldn't work for this Lambda function
-	searchReplace: ['0tcxhvlqqpyuncpeshxjajbkee.ax.internal.cloudapp.net','westeurope.cloudapp.azure.com']
-	// searchReplace: [null,null]
+	searchReplace: ['0tcxhvlqqpyuncpeshxjajbkee.ax.internal.cloudapp.net','westeurope.cloudapp.azure.com'],
+	// searchReplace: [null,null],
+	testuser: {
+		UserDirectory: 'WHATEVER',
+		UserId: 'beloved.user',
+		Attributes: [{"Group": 'ExampleGroup'}]
+	}
 }	
