@@ -1,6 +1,6 @@
 var https = require('https'); 
 var fs = require('fs'); 
-var request = require('request');
+
 var cmdLineArg1 = '' + process.argv[2];
 var cmdLineArg2 = '' + process.argv[3];
 
