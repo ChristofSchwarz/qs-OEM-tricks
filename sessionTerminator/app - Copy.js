@@ -109,13 +109,13 @@ function qApi(method, path, requestBody, returnMsg){
 
 // *** Main Code ***
 
-async function main(){
-    var sessions={};
-    var users={};
-    var res;
-    
+var sessions={};
+var users={};
+
+qApi('GET', '/qrs/license/analyzeraccessusage/full')
+.then(res => {
     // get session info from QRS license usage endpoint (Analyzers)
-    res = await qApi('GET', '/qrs/license/analyzeraccessusage/full');
+    //console.log('Analyzers:', res);
     res.json.forEach(si=>{
         
         var usr = si.modifiedByUserName;
@@ -125,10 +125,11 @@ async function main(){
         users[usr][si.sessionID].latestActivity = si.latestActivity;
         
     });    
-    
-    // get session info from QRS license usage endpoint (Professionals)    
-    res = await qApi('GET', '/qrs/license/professionalaccessusage/full');
-    
+    return qApi('GET', '/qrs/license/professionalaccessusage/full');
+})
+.then(res => {
+    // get session info from QRS license usage endpoint (Professionals)
+    //console.log('Professionals', res);
     res.json.forEach(si=>{
         var usr = si.modifiedByUserName;
         if (!users.hasOwnProperty(usr)) users[usr]={};
@@ -136,23 +137,24 @@ async function main(){
         users[usr][si.sessionID].license = 'professional';
         users[usr][si.sessionID].latestActivity = si.latestActivity;
     });
-        
-    var vproxyConf = await qApi('GET', '/qrs/virtualproxyconfig');
     
+    return qApi('GET', '/qrs/virtualproxyconfig');
+})
+.then(async vproxyConf => {    
+
     // Get a list of all sessions on all virtual proxies using the QPS API.
     // This time, some new sessions may show, such ones who do not consume a
     // license (e.g. admins logged in)
     // To get this, a promise array of all qps calls is constructed and awaited.
     // The array is constructed based on the result of the previous call, which
     // was /qrs/virtualproxyconfig
-        
+    
     promiseArr = [qApi('GET', '/qps/session')];  // sessions of default proxy
     vproxyConf.json.forEach(vproxy => {
        if (vproxy.prefix.length > 0) {
            promiseArr.push(qApi('GET', `/qps/${vproxy.prefix}/session`));
        }
     })
-    
     await Promise.all(promiseArr.map(prom => prom.catch(err => err)))
     .then(results => {
         results.forEach(res => {
@@ -187,7 +189,6 @@ async function main(){
                 sessions[entry.split('|')[1]].seq = i+1;
             });
         }
-        
         if (debugInfo) console.log('sessions:', sessions);
         if (debugInfo) console.log('users:', users);
 
@@ -218,9 +219,13 @@ async function main(){
             console.table(table);
         }
 
+
     }) 
     .catch(err => {console.log('Error', err)});
-       
-};
+    
+})
+.catch(function(err){
+    console.error("Something went wrong.");
+    console.error(err);
+});
 
-main();
